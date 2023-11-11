@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Results</title>
+    <!-- Adicione o link para o Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Training Results</h1>
+    
+    <!-- Selecione o modelo para exibir os resultados -->
+    <label for="modelSelect">Select Model:</label>
+    <select id="modelSelect"></select>
+
+    <!-- Exiba as métricas do modelo selecionado -->
+    <div id="metrics"></div>
+
+    <!-- Exiba o gráfico comparativo -->
+    <canvas id="comparisonChart" width="800" height="400"></canvas>
+
+    <script>
+        // Adicione os nomes dos modelos disponíveis ao seletor
+        var modelSelect = document.getElementById('modelSelect');
+        var models = ['VGG16', 'MobileNet', 'ResNet'];  // Adicione os modelos que você quer exibir
+        models.forEach(function(model) {
+            var option = document.createElement('option');
+            option.value = model;
+            option.text = model;
+            modelSelect.appendChild(option);
+        });
+
+        // Quando o modelo selecionado mudar, atualize as métricas e o gráfico
+        modelSelect.addEventListener('change', function() {
+            updateMetrics();
+            updateChart();
+        });
+
+        // Função para atualizar as métricas exibidas
+        function updateMetrics() {
+            var selectedModel = modelSelect.value;
+            var metricsDiv = document.getElementById('metrics');
+            metricsDiv.innerHTML = '';
+
+            // Carregue as métricas do arquivo CSV correspondente
+            fetch('./'+selectedModel + '_metrics.csv')
+                .then(response => response.text())
+                .then(data => {
+                    var lines = data.split('\n');
+                    var table = document.createElement('table');
+                    table.border = '1';
+
+                    lines.forEach(function(line) {
+                        var row = table.insertRow();
+                        var cells = line.split(',');
+                        cells.forEach(function(cell) {
+                            var cellElement = document.createElement('td');
+                            cellElement.textContent = cell.trim();
+                            row.appendChild(cellElement);
+                        });
+                    });
+
+                    metricsDiv.appendChild(table);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Função para atualizar o gráfico comparativo
+        function updateChart() {
+            var comparisonChart = document.getElementById('comparisonChart').getContext('2d');
+            var labels = [];
+            var datasets = [];
+
+            // Carregue as métricas dos arquivos CSV de todos os modelos
+            models.forEach(function(model) {
+                fetch('./'+model + '_metrics.csv')
+                    .then(response => response.text())
+                    .then(data => {
+                        var lines = data.split('\n');
+                        var lastLine = lines[lines.length - 2];
+                        var values = lastLine.split(',').map(function(value) {
+                            return parseFloat(value.trim());
+                        });
+
+                        labels.push(model);
+                        datasets.push({
+                            label: model,
+                            data: values.slice(1)  // Exclua o primeiro valor que é a época
+                        });
+
+                        // Se este é o último modelo, desenhe o gráfico
+                        if (model === models[models.length - 1]) {
+                            var data = {
+                                labels: ['Accuracy', 'F1', 'Precision', 'Recall', 'Sensitivity', 'Specificity', 'AUC'],
+                                datasets: datasets
+                            };
+
+                            var config = {
+                                type: 'bar',
+                                data: data,
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            };
+
+                            var chart = new Chart(comparisonChart, config);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        }
+    </script>
+</body>
+</html>

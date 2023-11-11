@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metrics App</title>
+</head>
+<body>
+    <h1>Metrics App</h1>
+    <form id="uploadForm" action="/predict" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".jpg, .jpeg, .png" required>
+        <button type="submit">Predict</button>
+    </form>
+    <div id="result"></div>
+</body>
+<script>
+    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        fetch('/predict', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            var resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>Predicted Class: ' + data.class + '</p>';
+            resultDiv.innerHTML += '<p>Probabilities: ' + JSON.stringify(data.probabilities) + '</p>';
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>
+</html>

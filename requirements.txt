@@ -1,16 +1,17 @@
 # Config
-PyYAML==3.13
-munch==2.3.2
+Pillow==8.0.0
+PyYAML==5.4.1
+numpy==1.21.2
 
 # Training
-torchnet==0.0.4
-tensorboardX==1.5
-jupyter==1.0.0
-tensorflow==1.12.0
+torch==1.9.0
+torchvision==0.10.0
+efficientnet-pytorch==0.7.1
+scikit-learn==0.24.2
+tqdm==4.62.3
 
 # Server
-Flask==1.0.2
+Flask==2.0.1
 
-# DeepMiner
-joblib==0.13.0
-scikit-image==0.14.1
+
+

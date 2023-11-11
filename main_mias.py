@@ -34,7 +34,7 @@ class CustomDataset(torch.utils.data.Dataset):
         self.transform = transform
         self.classes = sorted(os.listdir(root_dir))
         self.img_labels = pd.read_csv(csv_file)
-        self.img_dir = 'Mias_roi/images/'
+        self.img_dir = 'mias_database/images/'
 
     def __len__(self):
         return len(self.img_labels)
@@ -58,8 +58,8 @@ transform = transforms.Compose([
 ])
 
 
-data_root = "./Mias_roi"  
-labels_path = './Mias_roi/description.csv'
+data_root = "./databases/mias_database"  
+labels_path = './databases/mias_database/description.csv'
 dataset = CustomDataset(data_root, labels_path, transform=transform)
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 

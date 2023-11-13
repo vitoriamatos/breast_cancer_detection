@@ -5,68 +5,32 @@ This project uses 4 neural network structures to train the recognition of cancer
 ## Requirements
 For this project, we recommend using Nvida's CUDNN and ANACONDA.
 
+## Instalation
+You also need to run this script to set up a directory structure and install dependencies:
+
+```bash
+chmod +x setup_script.sh
+```
+
+```bash
+./setup_script.sh
+```
+
 ## Database
-After downloading the respective databases, we suggest you create the database directory, if you are using Linux you can follow these steps:
+After downloading the respective databases, we suggest that you extract the files into the directories of each database contained in  `/databases`
 
-```bash
-    mkdir databases
-```
 
-```bash
-    cd databases/
-```
-```bash
-    mkdir mammotherm_database
-```
-```bash
-    mkdir mias_database
-```
 * Mias Mammograph | Donwload
 
-    * After downloading the database, extract its contents into the mias_database directory
+    * After downloading the database, extract its contents into the `/databasesmias_database` direrectory
 
 * Mammotherm | Donwload
 
-    * After downloading the database, extract its contents into the mammotherm_database directory
+    * After downloading the database, extract its contents into the `/mammotherm_database` direrectory 
 
 
-## Instalation
-First install the dependencies:
-```bash
-pip install -r requirements.txt
-```
-During the installation process you can create directories to store metrics and models
 
-* Models
-    ```bash
-        mkdir models
-    ```
-
-    ```bash
-        cd models/
-    ```
-    ```bash
-        mkdir mammotherm
-    ```
-    ```bash
-        mkdir mias
-    ```
-
-
-* Methrics
-    ```bash
-        mkdir methrics
-    ```
-
-    ```bash
-        cd methrics/
-    ```
-    ```bash
-        mkdir mammotherm
-    ```
-    ```bash
-        mkdir mias
-    ```
+## Run Application
 Once this is done, and after completing the installation of the dependencies, you can choose which database to train:
 
 ```bash

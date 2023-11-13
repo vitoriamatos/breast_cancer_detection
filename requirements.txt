@@ -1,17 +1,16 @@
 # Config
-Pillow==8.0.0
-PyYAML==5.4.1
-numpy==1.21.2
+Pillow
+numpy
 
 # Training
-torch==1.9.0
-torchvision==0.10.0
-efficientnet-pytorch==0.7.1
-scikit-learn==0.24.2
-tqdm==4.62.3
+torch
+torchvision
+efficientnet-pytorch
+scikit-learn
+tqdm
 
 # Server
-Flask==2.0.1
+Flask
 
 
 
